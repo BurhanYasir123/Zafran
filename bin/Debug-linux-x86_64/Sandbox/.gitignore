@@ -1,0 +1,5 @@
+.vscode
+.git
+run.sh
+bin
+bin-int

@@ -14,6 +14,11 @@ namespace Zafran
     {
     }
 
+    void Object::Update()
+    {
+        ZF_INFO(".")
+    }
+
     void Object::ApplyMaterial(Material material)
     {
 

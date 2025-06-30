@@ -14,6 +14,7 @@ namespace Zafran
         Object();
         ~Object();
 
+        void Update();
         void ApplyMaterial(Material material);
         void ApplyTransform(Vec2f transform);
         void ApplyScale(Vec2f scale);

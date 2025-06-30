@@ -28,7 +28,7 @@ ifeq ($(origin AR), default)
   AR = ar
 endif
 RESCOMP = windres
-INCLUDES += -Isrc -Ivendor/GLFW/include -Ivendor/System_h/include
+INCLUDES += -Isrc -Ivendor/GLFW/include -Ivendor/GLFW/deps/glad/include
 FORCE_INCLUDE +=
 ALL_CPPFLAGS += $(CPPFLAGS) -MD -MP $(DEFINES) $(INCLUDES)
 ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
@@ -45,8 +45,8 @@ OBJDIR = ../bin-int/Debug-linux-x86_64/Zafran
 DEFINES += -DZAFRAN_PLATFORM_LINUX -DZAFRAN_BUILD_DLL -DZAFRAN_DEBUG
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -fPIC -g
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -fPIC -g
-LIBS += vendor/GLFW/bin/Debug/libGLFW.a
-LDDEPS += vendor/GLFW/bin/Debug/libGLFW.a
+LIBS += vendor/GLFW/bin/Debug/libOpenGL.a
+LDDEPS += vendor/GLFW/bin/Debug/libOpenGL.a
 ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -shared -Wl,-soname=libZafran.so
 define POSTBUILDCMDS
 	@echo Running postbuild commands
@@ -60,8 +60,8 @@ OBJDIR = ../bin-int/Release-linux-x86_64/Zafran
 DEFINES += -DZAFRAN_PLATFORM_LINUX -DZAFRAN_BUILD_DLL -DZAFRAN_RELEASE
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -O2 -fPIC
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -O2 -fPIC
-LIBS += vendor/GLFW/bin/Release/libGLFW.a
-LDDEPS += vendor/GLFW/bin/Release/libGLFW.a
+LIBS += vendor/GLFW/bin/Release/libOpenGL.a
+LDDEPS += vendor/GLFW/bin/Release/libOpenGL.a
 ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -shared -Wl,-soname=libZafran.so -s
 define POSTBUILDCMDS
 	@echo Running postbuild commands
@@ -85,11 +85,13 @@ GENERATED += $(OBJDIR)/Color.o
 GENERATED += $(OBJDIR)/Material.o
 GENERATED += $(OBJDIR)/Object.o
 GENERATED += $(OBJDIR)/Scene.o
+GENERATED += $(OBJDIR)/Window.o
 OBJECTS += $(OBJDIR)/Application.o
 OBJECTS += $(OBJDIR)/Color.o
 OBJECTS += $(OBJDIR)/Material.o
 OBJECTS += $(OBJDIR)/Object.o
 OBJECTS += $(OBJDIR)/Scene.o
+OBJECTS += $(OBJDIR)/Window.o
 
 # Rules
 # #############################################
@@ -166,6 +168,9 @@ $(OBJDIR)/Object.o: src/Object.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Scene.o: src/Scene.cpp
+	@echo "$(notdir $<)"
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Window.o: src/Window.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 

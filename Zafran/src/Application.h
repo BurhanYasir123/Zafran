@@ -16,8 +16,10 @@ namespace Zafran
         virtual void OnEvent();
         virtual void SetScene(Scene scene);
         virtual bool ShouldExit();
-        Scene GetCurrentScene();
-    private:
+        GLFWwindow* GetGlfwWindow();
+        void SetGlfwWindow(GLFWwindow* window);
+    
         Scene CurrentScene;
+        GLFWwindow* m_window;
     };
 }

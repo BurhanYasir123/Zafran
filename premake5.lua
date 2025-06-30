@@ -17,11 +17,11 @@ project "Zafran"
     includedirs {
         "%{prj.name}/src",
         "%{prj.name}/vendor/GLFW/include",
-        "Zafran/vendor/System_h/include",
+        "Zafran/vendor/GLFW/deps/glad/include"
     }
 
     links {
-        "GLFW"
+        "OpenGL"
     }
 
     filter "system:linux"
@@ -52,13 +52,13 @@ project "Sandbox"
         "Zafran/",
         "Zafran/src",
         "Zafran/vendor/GLFW/include",
-        "Zafran/vendor/System_h/include",
+        "Zafran/vendor/GLFW/deps/glad/include",
         "Sandbox/src"
     }
 
     links {
         "Zafran",
-        "GLFW"
+        "OpenGL"
     }
 
     filter "system:linux"
@@ -73,41 +73,26 @@ project "Sandbox"
         defines "SANDBOX_RELEASE"
         optimize "On"
 
-project "GLFW"
+project "OpenGL"
     location "Zafran/vendor/GLFW"
     kind "StaticLib"
     language "C"
     staticruntime "on"
+    pic "On"
 
     files {
         "Zafran/vendor/GLFW/include/GLFW/**.h",
         "Zafran/vendor/GLFW/src/**.h",
-        "Zafran/vendor/GLFW/src/**.c"
+        "Zafran/vendor/GLFW/src/**.c",
+        "Zafran/vendor/GLFW/deps/glad/src/**.c",
+        "Zafran/vendor/GLFW/deps/glad/include/glad/**.h"
     }
 
     includedirs {
-        "Zafran/vendor/GLFW/include"
+        "Zafran/vendor/GLFW/include",
+        "Zafran/vendor/GLFW/deps/glad/include"
     }
 
     filter "system:linux"
         systemversion "latest"
         defines { "_GLFW_X11" }
-
-project "System_h"
-    location "Zafran/vendor/System_h"
-    kind "StaticLib"
-    language "C++"
-    staticruntime "On"
-
-    files {
-        "Zafran/vendor/System_h/**.h",
-        "Zafran/vendor/System_h/**.cpp"
-    }
-
-    includedirs {
-        "Zafran/vendor/System_h/include"
-    }
-
-    filter "system:linux"
-        systemversion "latest"
-        defines { "MACROS" }

@@ -13,13 +13,21 @@ namespace Zafran
     {
     }
 
-    void Scene::PushObject(Object object)
+    void Scene::Update()
     {
-
+        for(int i=0;i!=m_Objects.size();i++)
+        {
+            m_Objects[i].Update();
+        }
     }
 
-    System::Vector<Object, Scene::Object_count> Scene::GetObjects()
+    void Scene::PushObject(Object& object)
     {
-        return System::Vector<Object, Object_count>();
+        m_Objects.push_back(object);
+    }
+
+    std::vector<Object>& Scene::GetObjects()
+    {
+        return m_Objects;
     }
 }

@@ -11,11 +11,6 @@ namespace Zafran
     {
     }
 
-    Scene Application::GetCurrentScene()
-    {
-        return Scene();
-    }
-
     void Application::Init()
     {
 
@@ -39,6 +34,16 @@ namespace Zafran
     bool Application::ShouldExit()
     {
         return false;
+    }
+
+    GLFWwindow* Application::GetGlfwWindow()
+    {
+        return m_window;
+    }
+
+    void Application::SetGlfwWindow(GLFWwindow* window)
+    {
+        m_window = window;
     }
 
 }

@@ -11,54 +11,45 @@ endif
 ifeq ($(config),debug)
   Zafran_config = debug
   Sandbox_config = debug
-  GLFW_config = debug
-  System_h_config = debug
+  OpenGL_config = debug
 
 else ifeq ($(config),release)
   Zafran_config = release
   Sandbox_config = release
-  GLFW_config = release
-  System_h_config = release
+  OpenGL_config = release
 
 else
   $(error "invalid configuration $(config)")
 endif
 
-PROJECTS := Zafran Sandbox GLFW System_h
+PROJECTS := Zafran Sandbox OpenGL
 
 .PHONY: all clean help $(PROJECTS) 
 
 all: $(PROJECTS)
 
-Zafran: GLFW
+Zafran: OpenGL
 ifneq (,$(Zafran_config))
 	@echo "==== Building Zafran ($(Zafran_config)) ===="
 	@${MAKE} --no-print-directory -C Zafran -f Makefile config=$(Zafran_config)
 endif
 
-Sandbox: Zafran GLFW
+Sandbox: Zafran OpenGL
 ifneq (,$(Sandbox_config))
 	@echo "==== Building Sandbox ($(Sandbox_config)) ===="
 	@${MAKE} --no-print-directory -C Sandbox -f Makefile config=$(Sandbox_config)
 endif
 
-GLFW:
-ifneq (,$(GLFW_config))
-	@echo "==== Building GLFW ($(GLFW_config)) ===="
-	@${MAKE} --no-print-directory -C Zafran/vendor/GLFW -f Makefile config=$(GLFW_config)
-endif
-
-System_h:
-ifneq (,$(System_h_config))
-	@echo "==== Building System_h ($(System_h_config)) ===="
-	@${MAKE} --no-print-directory -C Zafran/vendor/System_h -f Makefile config=$(System_h_config)
+OpenGL:
+ifneq (,$(OpenGL_config))
+	@echo "==== Building OpenGL ($(OpenGL_config)) ===="
+	@${MAKE} --no-print-directory -C Zafran/vendor/GLFW -f Makefile config=$(OpenGL_config)
 endif
 
 clean:
 	@${MAKE} --no-print-directory -C Zafran -f Makefile clean
 	@${MAKE} --no-print-directory -C Sandbox -f Makefile clean
 	@${MAKE} --no-print-directory -C Zafran/vendor/GLFW -f Makefile clean
-	@${MAKE} --no-print-directory -C Zafran/vendor/System_h -f Makefile clean
 
 help:
 	@echo "Usage: make [config=name] [target]"
@@ -72,7 +63,6 @@ help:
 	@echo "   clean"
 	@echo "   Zafran"
 	@echo "   Sandbox"
-	@echo "   GLFW"
-	@echo "   System_h"
+	@echo "   OpenGL"
 	@echo ""
 	@echo "For more information, see https://github.com/premake/premake-core/wiki"

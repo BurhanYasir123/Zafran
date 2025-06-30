@@ -7,3 +7,4 @@
 #include "Color.h"
 #include "Core.h"
 #include "EntryPoint.h"
+#include "Window.h"

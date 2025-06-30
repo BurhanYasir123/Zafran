@@ -28,7 +28,7 @@ ifeq ($(origin AR), default)
   AR = ar
 endif
 RESCOMP = windres
-INCLUDES += -I../Zafran -I../Zafran/src -I../Zafran/vendor/GLFW/include -I../Zafran/vendor/System_h/include -Isrc
+INCLUDES += -I../Zafran -I../Zafran/src -I../Zafran/vendor/GLFW/include -I../Zafran/vendor/GLFW/deps/glad/include -Isrc
 FORCE_INCLUDE +=
 ALL_CPPFLAGS += $(CPPFLAGS) -MD -MP $(DEFINES) $(INCLUDES)
 ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
@@ -47,8 +47,8 @@ OBJDIR = ../bin-int/Debug-linux-x86_64/Sandbox
 DEFINES += -DZAFRAN_PLATFORM_LINUX -DSANDBOX_DEBUG
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -g
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -g
-LIBS += ../bin/Debug-linux-x86_64/Zafran/libZafran.so ../Zafran/vendor/GLFW/bin/Debug/libGLFW.a
-LDDEPS += ../bin/Debug-linux-x86_64/Zafran/libZafran.so ../Zafran/vendor/GLFW/bin/Debug/libGLFW.a
+LIBS += ../bin/Debug-linux-x86_64/Zafran/libZafran.so ../Zafran/vendor/GLFW/bin/Debug/libOpenGL.a
+LDDEPS += ../bin/Debug-linux-x86_64/Zafran/libZafran.so ../Zafran/vendor/GLFW/bin/Debug/libOpenGL.a
 ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -Wl,-rpath,'$$ORIGIN/../Zafran' -m64
 
 else ifeq ($(config),release)
@@ -58,8 +58,8 @@ OBJDIR = ../bin-int/Release-linux-x86_64/Sandbox
 DEFINES += -DZAFRAN_PLATFORM_LINUX -DSANDBOX_RELEASE
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -O2
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -O2
-LIBS += ../bin/Release-linux-x86_64/Zafran/libZafran.so ../Zafran/vendor/GLFW/bin/Release/libGLFW.a
-LDDEPS += ../bin/Release-linux-x86_64/Zafran/libZafran.so ../Zafran/vendor/GLFW/bin/Release/libGLFW.a
+LIBS += ../bin/Release-linux-x86_64/Zafran/libZafran.so ../Zafran/vendor/GLFW/bin/Release/libOpenGL.a
+LDDEPS += ../bin/Release-linux-x86_64/Zafran/libZafran.so ../Zafran/vendor/GLFW/bin/Release/libOpenGL.a
 ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -Wl,-rpath,'$$ORIGIN/../Zafran' -m64 -s
 
 endif

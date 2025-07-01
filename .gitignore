@@ -1,10 +1,10 @@
 .vscode
 .git
-bin
-bin-int
-Refrences
+./bin
+./bin-int
+./Refrences
 
 token.txt
 
-*.o
-*.d
+./*.o
+./*.d

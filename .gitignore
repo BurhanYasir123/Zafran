@@ -4,5 +4,7 @@ bin
 bin-int
 Refrences
 
+token.txt
+
 *.o
 *.d

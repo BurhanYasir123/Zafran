@@ -21,5 +21,7 @@ namespace Zafran
     
         Scene CurrentScene;
         GLFWwindow* m_window;
+        bool ImGui;
+        int deltatime;
     };
 }

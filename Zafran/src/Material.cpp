@@ -13,11 +13,11 @@ namespace Zafran
 
     void Material::ApplyColor(Color color)
     {
-
+        m_color = color;
     }
 
     Color Material::GetColor()
     {
-        return Color();
+        return m_color;
     }
 }

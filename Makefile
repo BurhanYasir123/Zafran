@@ -12,29 +12,31 @@ ifeq ($(config),debug)
   Zafran_config = debug
   Sandbox_config = debug
   OpenGL_config = debug
+  ImGui_config = debug
 
 else ifeq ($(config),release)
   Zafran_config = release
   Sandbox_config = release
   OpenGL_config = release
+  ImGui_config = release
 
 else
   $(error "invalid configuration $(config)")
 endif
 
-PROJECTS := Zafran Sandbox OpenGL
+PROJECTS := Zafran Sandbox OpenGL ImGui
 
 .PHONY: all clean help $(PROJECTS) 
 
 all: $(PROJECTS)
 
-Zafran: OpenGL
+Zafran: OpenGL ImGui
 ifneq (,$(Zafran_config))
 	@echo "==== Building Zafran ($(Zafran_config)) ===="
 	@${MAKE} --no-print-directory -C Zafran -f Makefile config=$(Zafran_config)
 endif
 
-Sandbox: Zafran OpenGL
+Sandbox: Zafran OpenGL ImGui
 ifneq (,$(Sandbox_config))
 	@echo "==== Building Sandbox ($(Sandbox_config)) ===="
 	@${MAKE} --no-print-directory -C Sandbox -f Makefile config=$(Sandbox_config)
@@ -46,10 +48,17 @@ ifneq (,$(OpenGL_config))
 	@${MAKE} --no-print-directory -C Zafran/vendor/GLFW -f Makefile config=$(OpenGL_config)
 endif
 
+ImGui: OpenGL
+ifneq (,$(ImGui_config))
+	@echo "==== Building ImGui ($(ImGui_config)) ===="
+	@${MAKE} --no-print-directory -C Zafran/vendor/imgui -f Makefile config=$(ImGui_config)
+endif
+
 clean:
 	@${MAKE} --no-print-directory -C Zafran -f Makefile clean
 	@${MAKE} --no-print-directory -C Sandbox -f Makefile clean
 	@${MAKE} --no-print-directory -C Zafran/vendor/GLFW -f Makefile clean
+	@${MAKE} --no-print-directory -C Zafran/vendor/imgui -f Makefile clean
 
 help:
 	@echo "Usage: make [config=name] [target]"
@@ -64,5 +73,6 @@ help:
 	@echo "   Zafran"
 	@echo "   Sandbox"
 	@echo "   OpenGL"
+	@echo "   ImGui"
 	@echo ""
 	@echo "For more information, see https://github.com/premake/premake-core/wiki"

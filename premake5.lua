@@ -17,11 +17,13 @@ project "Zafran"
     includedirs {
         "%{prj.name}/src",
         "%{prj.name}/vendor/GLFW/include",
-        "Zafran/vendor/GLFW/deps/glad/include"
+        "Zafran/vendor/GLFW/deps/glad/include",
+        "Zafran/vendor/imgui/src"
     }
 
     links {
-        "OpenGL"
+        "OpenGL",
+        "ImGui"
     }
 
     filter "system:linux"
@@ -53,12 +55,14 @@ project "Sandbox"
         "Zafran/src",
         "Zafran/vendor/GLFW/include",
         "Zafran/vendor/GLFW/deps/glad/include",
-        "Sandbox/src"
+        "Sandbox/src",
+        "Zafran/vendor/imgui/src"
     }
 
     links {
         "Zafran",
-        "OpenGL"
+        "OpenGL",
+        "ImGui"
     }
 
     filter "system:linux"
@@ -96,3 +100,30 @@ project "OpenGL"
     filter "system:linux"
         systemversion "latest"
         defines { "_GLFW_X11" }
+
+project "ImGui"
+    location "Zafran/vendor/imgui"
+    kind "StaticLib"
+    language "C++"
+    staticruntime "on"
+    pic "On"
+    
+    files {
+        "Zafran/vendor/imgui/src/**.cpp",
+        "Zafran/vendor/imgui/src/**.h"
+    }
+
+    includedirs {
+        "Zafran/vendor/imgui",
+        "/usr/include/freetype2",
+        "Zafran/vendor/GLFW/include",
+        "Zafran/vendor/GLFW/deps/glad/include"
+    }
+
+    links {
+        "freetype",
+        "OpenGL"
+    }
+
+    filter "system:linux"
+        systemversion "latest"

@@ -9,6 +9,7 @@ namespace Zafran
 
     Application::~Application()
     {
+        
     }
 
     void Application::Init()
@@ -27,8 +28,8 @@ namespace Zafran
     }
 
     void Application::SetScene(Scene scene)
-    {
-
+    {   
+        CurrentScene = scene;
     }
 
     bool Application::ShouldExit()

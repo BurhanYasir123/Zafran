@@ -28,7 +28,7 @@ ifeq ($(origin AR), default)
   AR = ar
 endif
 RESCOMP = windres
-INCLUDES += -Isrc -Ivendor/GLFW/include -Ivendor/GLFW/deps/glad/include
+INCLUDES += -Isrc -Ivendor/GLFW/include -Ivendor/GLFW/deps/glad/include -Ivendor/imgui/src
 FORCE_INCLUDE +=
 ALL_CPPFLAGS += $(CPPFLAGS) -MD -MP $(DEFINES) $(INCLUDES)
 ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
@@ -45,8 +45,8 @@ OBJDIR = ../bin-int/Debug-linux-x86_64/Zafran
 DEFINES += -DZAFRAN_PLATFORM_LINUX -DZAFRAN_BUILD_DLL -DZAFRAN_DEBUG
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -fPIC -g
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -fPIC -g
-LIBS += vendor/GLFW/bin/Debug/libOpenGL.a
-LDDEPS += vendor/GLFW/bin/Debug/libOpenGL.a
+LIBS += vendor/GLFW/bin/Debug/libOpenGL.a vendor/imgui/bin/Debug/libImGui.a
+LDDEPS += vendor/GLFW/bin/Debug/libOpenGL.a vendor/imgui/bin/Debug/libImGui.a
 ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -shared -Wl,-soname=libZafran.so
 define POSTBUILDCMDS
 	@echo Running postbuild commands
@@ -60,8 +60,8 @@ OBJDIR = ../bin-int/Release-linux-x86_64/Zafran
 DEFINES += -DZAFRAN_PLATFORM_LINUX -DZAFRAN_BUILD_DLL -DZAFRAN_RELEASE
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -O2 -fPIC
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -O2 -fPIC
-LIBS += vendor/GLFW/bin/Release/libOpenGL.a
-LDDEPS += vendor/GLFW/bin/Release/libOpenGL.a
+LIBS += vendor/GLFW/bin/Release/libOpenGL.a vendor/imgui/bin/Release/libImGui.a
+LDDEPS += vendor/GLFW/bin/Release/libOpenGL.a vendor/imgui/bin/Release/libImGui.a
 ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -shared -Wl,-soname=libZafran.so -s
 define POSTBUILDCMDS
 	@echo Running postbuild commands
@@ -82,14 +82,20 @@ OBJECTS :=
 
 GENERATED += $(OBJDIR)/Application.o
 GENERATED += $(OBJDIR)/Color.o
+GENERATED += $(OBJDIR)/ImGuiRenderer.o
+GENERATED += $(OBJDIR)/Input.o
 GENERATED += $(OBJDIR)/Material.o
 GENERATED += $(OBJDIR)/Object.o
+GENERATED += $(OBJDIR)/Renderer.o
 GENERATED += $(OBJDIR)/Scene.o
 GENERATED += $(OBJDIR)/Window.o
 OBJECTS += $(OBJDIR)/Application.o
 OBJECTS += $(OBJDIR)/Color.o
+OBJECTS += $(OBJDIR)/ImGuiRenderer.o
+OBJECTS += $(OBJDIR)/Input.o
 OBJECTS += $(OBJDIR)/Material.o
 OBJECTS += $(OBJDIR)/Object.o
+OBJECTS += $(OBJDIR)/Renderer.o
 OBJECTS += $(OBJDIR)/Scene.o
 OBJECTS += $(OBJDIR)/Window.o
 
@@ -161,10 +167,19 @@ $(OBJDIR)/Application.o: src/Application.cpp
 $(OBJDIR)/Color.o: src/Color.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/ImGuiRenderer.o: src/ImGui/ImGuiRenderer.cpp
+	@echo "$(notdir $<)"
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Input.o: src/Input.cpp
+	@echo "$(notdir $<)"
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Material.o: src/Material.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Object.o: src/Object.cpp
+	@echo "$(notdir $<)"
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Renderer.o: src/Renderer/Renderer.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Scene.o: src/Scene.cpp

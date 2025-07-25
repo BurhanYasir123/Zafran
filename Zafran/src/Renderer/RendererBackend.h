@@ -2,10 +2,6 @@
 
 #include "Core.h"
 
-// /usr/bin/ld: ../bin-int/Debug-linux-x86_64/Zafran/Renderer.o: in function `std::__new_allocator<Zafran::Time>::__new_allocator()':
-// /home/burhan/Drive2/dev/Zafran/Zafran/src/Renderer/RendererBackend.h:9: multiple definition of `Zafran::OpenGL::Loadshaders(char const*, char const*)'; ../bin-int/Debug-linux-x86_64/Zafran/Object.o:/home/burhan/Drive2/dev/Zafran/Zafran/src/Renderer/RendererBackend.h:9: first defined here
-// FIX THIS PLEASE CODE COMPLETION
-
 namespace Zafran{
     namespace OpenGL
     {

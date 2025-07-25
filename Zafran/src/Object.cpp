@@ -8,14 +8,13 @@ namespace Zafran
     {
         ZF_INFO("HI");
 
-        float[] Points = object.GetVerticies();
-        int length = sizeof(Points) / sizeof(Points[0])
-        
-        GLuint vertexbuffer;
-        glGenBuffers(1, &vertexbuffer);
-        glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(Points), Points, GL_STATIC_DRAW);
-        VB = vertexbuffer;
+        m_ProgramID = Renderer::GetDefaultShaderProgram();
+        glGenBuffers(1, &VB);
+    }
+
+    Object::Object()
+    {
+    
     }
 
     Object::~Object()
@@ -76,12 +75,22 @@ namespace Zafran
         return m_type;
     }
 
-    void Object::SetVerticies(float[] Verticies)
+    void Object::SetVerticies(const GLfloat* Verticies, int count)
     {
         m_Verticies = Verticies;
+        m_numVerticies = count / 3; // assuming 2 floats per vertex
+
+        //ZF_WARN("SetVerticies called with count: " << count);
+        for(int i=0;i!=6;i++)
+        {
+            ZF_WARN(Verticies[i] << " ;");
+        }
+
+        glBindBuffer(GL_ARRAY_BUFFER, VB);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(float) * count, Verticies, GL_DYNAMIC_DRAW);
     }
 
-    float[] Object::GetVerticies()
+    const float* Object::GetVerticies()
     {
         return m_Verticies;
     }
@@ -89,5 +98,10 @@ namespace Zafran
     GLuint Object::GetVB()
     {
         return VB;
+    }
+
+    int Object::GetProgramID()
+    {
+        return m_ProgramID;
     }
 }

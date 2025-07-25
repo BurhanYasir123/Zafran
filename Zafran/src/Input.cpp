@@ -5,7 +5,7 @@ namespace Zafran
     bool Input::IsKeyPressedImpl(int key)
     {
         auto state = glfwGetKey(m_window, key);
-        ZF_INFO("Key state:" << state);
+        //ZF_INFO("Key state:" << state);
         return state == GLFW_PRESS;
     }
 

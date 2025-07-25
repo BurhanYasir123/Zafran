@@ -37,12 +37,12 @@ namespace Zafran
         return false;
     }
 
-    GLFWwindow* Application::GetGlfwWindow()
+    Window Application::GetWindow()
     {
         return m_window;
     }
 
-    void Application::SetGlfwWindow(GLFWwindow* window)
+    void Application::SetWindow(Window window)
     {
         m_window = window;
     }

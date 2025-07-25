@@ -9,6 +9,12 @@ namespace Zafran
         Window();
         ~Window();
 
-        static GLFWwindow* Init(Vec2i size, const char* title);
+        static Window Init(Vec2i size, const char* title);
+
+        GLFWwindow* GetGlfwWindow() { return m_window; };
+        void SetGlfwWindow(GLFWwindow* window) { m_window = window; };
+
+    private:
+        GLFWwindow* m_window;
     };
 }

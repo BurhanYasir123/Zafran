@@ -30,7 +30,8 @@ project "Zafran"
         systemversion "latest"
         defines { "ZAFRAN_PLATFORM_LINUX", "ZAFRAN_BUILD_DLL" }
         postbuildcommands {
-            ("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
+            ("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox"),
+            ("{COPYDIR} ../Zafran/src/Renderer/Shaders ../bin/%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}/Sandbox/Shaders")
         }
 
     filter "configurations:Debug"
@@ -127,3 +128,34 @@ project "ImGui"
 
     filter "system:linux"
         systemversion "latest"
+
+project "Example"
+    location "Refrences"
+    kind "ConsoleApp"
+    language "C++"
+    targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+    objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+
+    files {"Refrences/**.cpp" }
+
+    includedirs {
+        "Zafran/vendor/GLFW/include",
+        "Zafran/vendor/GLFW/deps/glad/include"
+    }
+
+    links {
+        "OpenGL"    
+    }
+
+    filter "system:linux"
+        systemversion "latest"
+        defines { "ZAFRAN_PLATFORM_LINUX" }
+
+    filter "configurations:Debug"
+        defines "SANDBOX_DEBUG"
+        symbols "On"
+
+    filter "configurations:Release"
+        defines "SANDBOX_RELEASE"
+        optimize "On"
+    

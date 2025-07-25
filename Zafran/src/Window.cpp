@@ -10,7 +10,7 @@ namespace Zafran
     {
     }
 
-    GLFWwindow* Window::Init(Vec2i size, const char* title)
+    Window Window::Init(Vec2i size, const char* title)
     {
         if(!glfwInit()) ZF_CORE_ERROR("Coudnt Initialize GLFW");
         GLFWwindow* window = glfwCreateWindow(size.x, size.y, title, NULL, NULL);
@@ -21,6 +21,11 @@ namespace Zafran
         }
         glfwMakeContextCurrent(window);
         gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-        return window;
+        glViewport(0, 0, size.x, size.y);
+
+        Window _window = Window();
+        _window.SetGlfwWindow(window);
+        
+        return _window;
     }
 }

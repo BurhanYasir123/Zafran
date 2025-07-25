@@ -2,6 +2,7 @@
 
 #include "Core.h"
 #include "Object.h"
+#include "RendererBackend.h"
 
 namespace Zafran
 {
@@ -11,22 +12,22 @@ namespace Zafran
         Renderer();
         ~Renderer();
 
+        static void Init();
+
         #ifndef ZF_API_VULKAN
 
         static void DrawObject(Object object);
-        
         #else
         
         static void DrawObject(Object object);
         
         #endif
-        inline static int GetDefaultShaderProgram() { return DefaultShaderProgram; };
+        static int GetDefaultShaderProgram() { return DefaultShaderProgram; };
     private:
         static int DefaultShaderProgram;
 
         #ifndef ZF_API_VULKAN
        
-        int Loadshaders();
        
         #else
        

@@ -4,5 +4,6 @@
 make clean
 make config=debug
 echo -----Running Sandbox------
-./bin/Debug-linux-x86_64/Sandbox/Sandbox
+cd bin/Debug-linux-x86_64/Sandbox/
+./Sandbox
 

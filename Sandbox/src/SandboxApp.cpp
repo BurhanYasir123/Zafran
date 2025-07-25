@@ -5,17 +5,20 @@ class MyApp : public Zafran::Application
     public:
     void Init()
     {
-        SetGlfwWindow(Zafran::Window::Init(Vec2i(800,600), "Window"));
+        SetWindow(Zafran::Window::Init(Vec2i(800,600), "Window"));
         Zafran::ImGuiRenderer::InitImGui(*this);
+        Zafran::Renderer::Init();
 
         count = 0;
-        
+
         box = Zafran::Object(Zafran::ZF_TRIANGLE);
-        box.SetVerticies([
-            -1.0f, -1.0f,
-            1.0f, -1.0f,
-            0.0f,  1.0f,
-        ]);
+        static const GLfloat triangleVertices[] = {
+             -0.5f, -0.5f, 0.0f,
+              0.5f, -0.5f, 0.0f,
+               0.0f,  0.5f, 0.0f
+        };
+
+        box.SetVerticies(triangleVertices, 9);
         
         CurrentScene.PushObject(box);
     }
@@ -32,27 +35,32 @@ class MyApp : public Zafran::Application
         
         count++;
         ZF_INFO(count);
-        
+
         CurrentScene.Update();
         
         if(ImGui::Begin("Main"))
         {
             ImGui::Button("hi");
+
             ZF_INFO(deltatime);
+            
             if(count%20 == 0) FPS = 1000.0f/deltatime;
+            
             ImGui::Text("FPS: %.2f", FPS);
+
         }ImGui::End();
 
     }
 
     bool ShouldExit()
     {
-        return glfwWindowShouldClose(GetGlfwWindow());
+        return glfwWindowShouldClose(GetWindow().GetGlfwWindow());
     }
 
     int count;
     
-    Zafran::Object box = Zafran::Object(Zafran::ZF_RECTANGLE);
+    //Zafran::Object box = Zafran::Object(Zafran::ZF_TRIANGLE);
+    Zafran::Object box;
     
     double FPS;
 };

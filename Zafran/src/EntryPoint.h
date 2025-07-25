@@ -3,6 +3,7 @@
 #include "Application.h"
 
 #include "ImGui/ImGuiRenderer.h"
+#include "Renderer/Renderer.h"
 #include "Input.h"
 
 namespace Zafran
@@ -12,9 +13,10 @@ namespace Zafran
         app.Init();
         app.deltatime = 1000/60;
 
-        Input::SetWindow(app.GetGlfwWindow());
-        
-        while(!(app.ShouldExit() || glfwWindowShouldClose(app.GetGlfwWindow())))
+        Input::SetWindow(app.GetWindow().GetGlfwWindow());
+        //Renderer::Init();     
+   
+        while(!(app.ShouldExit() || glfwWindowShouldClose(app.GetWindow().GetGlfwWindow())))
         {
             // Deltatime calculation
             auto start = std::chrono::high_resolution_clock::now();
@@ -24,14 +26,14 @@ namespace Zafran
             // For ImGui Frames
             if(app.ImGui) ImGuiRenderer::InitFrame();
             
+            glClear(GL_COLOR_BUFFER_BIT);
             app.Update();
             
-            glClear(GL_COLOR_BUFFER_BIT);
             
             // For ImGui Render
             if(app.ImGui) ImGuiRenderer::RenderFrame();
             
-            glfwSwapBuffers(app.GetGlfwWindow());
+            glfwSwapBuffers(app.GetWindow().GetGlfwWindow());
             
             // Deltatime Calcualtion
             auto end = std::chrono::high_resolution_clock::now();
@@ -42,6 +44,6 @@ namespace Zafran
         if(app.ImGui) ImGuiRenderer::EndImGui();
         
         glfwTerminate();
-        glfwDestroyWindow(app.GetGlfwWindow());
+        glfwDestroyWindow(app.GetWindow().GetGlfwWindow());
     }
 }

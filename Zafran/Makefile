@@ -51,6 +51,7 @@ ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -shared -Wl,-soname=libZafran.so
 define POSTBUILDCMDS
 	@echo Running postbuild commands
 	cp -rf ../bin/Debug-linux-x86_64/Zafran/libZafran.so ../bin/Debug-linux-x86_64/Sandbox
+	cp -rf ../Zafran/src/Renderer/Shaders ../bin/Debug-linux-x86_64/Sandbox/Shaders
 endef
 
 else ifeq ($(config),release)
@@ -66,6 +67,7 @@ ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -shared -Wl,-soname=libZafran.so -s
 define POSTBUILDCMDS
 	@echo Running postbuild commands
 	cp -rf ../bin/Release-linux-x86_64/Zafran/libZafran.so ../bin/Release-linux-x86_64/Sandbox
+	cp -rf ../Zafran/src/Renderer/Shaders ../bin/Release-linux-x86_64/Sandbox/Shaders
 endef
 
 endif

@@ -2,6 +2,7 @@
 
 #include "Core.h"
 #include "Scene.h"
+#include "Window.h"
 
 namespace Zafran
 {
@@ -16,11 +17,12 @@ namespace Zafran
         virtual void OnEvent();
         virtual void SetScene(Scene scene);
         virtual bool ShouldExit();
-        GLFWwindow* GetGlfwWindow();
-        void SetGlfwWindow(GLFWwindow* window);
+
+        void SetWindow(Window window);
+        Window GetWindow();
     
         Scene CurrentScene;
-        GLFWwindow* m_window;
+        Window m_window;
         bool ImGui;
         int deltatime;
     };

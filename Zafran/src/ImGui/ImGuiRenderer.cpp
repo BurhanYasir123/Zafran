@@ -13,7 +13,7 @@ namespace Zafran
         ImGuiIO& io = ImGui::GetIO(); (void)io;
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
         
-        ImGui_ImplGlfw_InitForOpenGL(app.GetGlfwWindow(), true);
+        ImGui_ImplGlfw_InitForOpenGL(app.GetWindow().GetGlfwWindow(), true);
         ImGui_ImplOpenGL3_Init("#version 130");
 
     }

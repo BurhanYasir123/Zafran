@@ -19,6 +19,7 @@ namespace Zafran
     {
     public:
         Object(Object_Type type);
+        Object();
         ~Object();
 
         void Update();
@@ -31,16 +32,19 @@ namespace Zafran
         Vec2f GetTransform();
         Vec2f GetScale();
         Object_Type GetType();
-        void SetVerticies(float[] Verticies);
-        float[] GetVerticies();
+        void SetVerticies(const GLfloat* Verticies, int count);
+        const float* GetVerticies();
         GLuint GetVB();
+        int GetProgramID();
+        int m_numVerticies;
     private:
         Object_Type m_type;
         Material m_material;
         Vec2f m_transform;
         Vec2f m_scale;
         bool show = true;
-        float[] m_Verticies;
+        const GLfloat* m_Verticies;
         GLuint VB;
+        int m_ProgramID;
     };
 }

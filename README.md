@@ -1,3 +1,4 @@
+<h1>WARNING: this project is in alpha and very very basic</h1>
 <h1>.Zafran.</h1>
 Zafran is a game engine that aims to be the unique from the group,
 it has no features planned yet, but its in development, the features are gonna be determined after a significat chunk of the Zafran Renderer will be built

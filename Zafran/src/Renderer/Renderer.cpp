@@ -39,7 +39,14 @@ namespace Zafran
                 0,                  // stride
                 (void*)0            // array buffer offset
             );
+            
+        
             glUseProgram(object.GetProgramID());
+    
+            int ColorLocation = glGetUniformLocation(object.GetProgramID(), "ourColor");        
+            glUniform4f(ColorLocation, object.material.color.r, object.material.color.g, object.material.color.b, object.material.color.a);  
+            ZF_INFO(object.material.color.r << " " << object.material.color.g << " " << object.material.color.b);          
+
             ZF_INFO("Loaded ID: " << object.GetProgramID());
             // Draw the triangle !
             glDrawArrays(GL_TRIANGLES, 0, 3);

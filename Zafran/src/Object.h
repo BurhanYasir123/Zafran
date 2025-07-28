@@ -25,10 +25,8 @@ namespace Zafran
         void Update();
         void ToggleInvisible();
         bool IsInvisible();
-        void ApplyMaterial(Material material);
         void AddTransform(Vec2f transform);
         void AddScale(Vec2f scale);
-        Material GetMaterial();
         Vec2f GetTransform();
         Vec2f GetScale();
         Object_Type GetType();
@@ -37,9 +35,10 @@ namespace Zafran
         GLuint GetVB();
         int GetProgramID();
         int m_numVerticies;
+
+        Material material;
     private:
         Object_Type m_type;
-        Material m_material;
         Vec2f m_transform;
         Vec2f m_scale;
         bool show = true;

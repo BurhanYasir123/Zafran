@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Application.h"
+#include "Object.h"
 
 #include "ImGui/ImGuiRenderer.h"
 #include "Renderer/Renderer.h"
@@ -27,8 +28,8 @@ namespace Zafran
             if(app.ImGui) ImGuiRenderer::InitFrame();
             
             glClear(GL_COLOR_BUFFER_BIT);
-            app.Update();
             
+            app.Update();
             
             // For ImGui Render
             if(app.ImGui) ImGuiRenderer::RenderFrame();

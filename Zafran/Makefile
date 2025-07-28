@@ -83,19 +83,15 @@ GENERATED :=
 OBJECTS :=
 
 GENERATED += $(OBJDIR)/Application.o
-GENERATED += $(OBJDIR)/Color.o
 GENERATED += $(OBJDIR)/ImGuiRenderer.o
 GENERATED += $(OBJDIR)/Input.o
-GENERATED += $(OBJDIR)/Material.o
 GENERATED += $(OBJDIR)/Object.o
 GENERATED += $(OBJDIR)/Renderer.o
 GENERATED += $(OBJDIR)/Scene.o
 GENERATED += $(OBJDIR)/Window.o
 OBJECTS += $(OBJDIR)/Application.o
-OBJECTS += $(OBJDIR)/Color.o
 OBJECTS += $(OBJDIR)/ImGuiRenderer.o
 OBJECTS += $(OBJDIR)/Input.o
-OBJECTS += $(OBJDIR)/Material.o
 OBJECTS += $(OBJDIR)/Object.o
 OBJECTS += $(OBJDIR)/Renderer.o
 OBJECTS += $(OBJDIR)/Scene.o
@@ -166,16 +162,10 @@ endif
 $(OBJDIR)/Application.o: src/Application.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/Color.o: src/Color.cpp
-	@echo "$(notdir $<)"
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/ImGuiRenderer.o: src/ImGui/ImGuiRenderer.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Input.o: src/Input.cpp
-	@echo "$(notdir $<)"
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/Material.o: src/Material.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Object.o: src/Object.cpp

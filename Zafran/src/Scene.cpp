@@ -18,6 +18,7 @@ namespace Zafran
         for(int i=0;i!=m_Objects.size();i++)
         {
             m_Objects[i].Update();
+            ZF_INFO(i);
         }
     }
 

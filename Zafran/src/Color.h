@@ -3,17 +3,19 @@
 #include "Core.h"
 
 
-
-namespace Zafran
+struct ZF_API Color
 {
-    class ZF_API Color
-    {
-    public:
-        Color();
-        ~Color();
-        void SetRGB(Vec3f RGB);
+    Color() { }
 
-    private:
-        Vec3f m_RGB;
-    };
-}
+    Color(float _r, float _g, float _b, float _a) 
+        : r(_r), g(_g), b(_b), a(_a) { }
+
+    Color(float _r, float _g, float _b)
+        : r(_r), g(_g), b(_b) { }
+
+    float r = 0.2;
+    float g = 0.2;
+    float b = 0.2;
+    float a = 1;
+};
+

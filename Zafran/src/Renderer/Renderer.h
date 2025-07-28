@@ -18,21 +18,21 @@ namespace Zafran
 
         static void DrawObject(Object object);
         #else
-        
+
         static void DrawObject(Object object);
-        
+
         #endif
         static int GetDefaultShaderProgram() { return DefaultShaderProgram; };
     private:
         static int DefaultShaderProgram;
 
         #ifndef ZF_API_VULKAN
-       
-       
+
+
         #else
-       
+
         // VULKAN STUFF
-      
+
         #endif
     };
 }

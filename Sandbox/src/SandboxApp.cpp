@@ -11,16 +11,20 @@ class MyApp : public Zafran::Application
 
         count = 0;
 
-        box = Zafran::Object(Zafran::ZF_TRIANGLE);
         static const GLfloat triangleVertices[] = {
              -0.5f, -0.5f, 0.0f,
               0.5f, -0.5f, 0.0f,
                0.0f,  0.5f, 0.0f
         };
 
-        box.SetVerticies(triangleVertices, 9);
+        //mat = Material(Color(0,1,0));
+
         
-        CurrentScene.PushObject(box);
+        box.SetVerticies(triangleVertices, 9);
+        //box.material = mat;   
+
+
+        //CurrentScene.PushObject(box);
     }
 
     void Update()
@@ -36,7 +40,19 @@ class MyApp : public Zafran::Application
         count++;
         ZF_INFO(count);
 
-        CurrentScene.Update();
+        box.material = Material(Color(1,pos.y/600,0));
+
+        const GLfloat triangleVertices[] = {
+             -0.5f, -0.5f, 0.0f,
+              0.5f, -0.5f, 0.0f,
+              (pos.x/400)-1,  0.5f, 0.0f
+        };
+
+        
+        box.SetVerticies(triangleVertices, 9);
+
+        box.Update();
+        //CurrentScene.Update();
         
         if(ImGui::Begin("Main"))
         {
@@ -59,8 +75,8 @@ class MyApp : public Zafran::Application
 
     int count;
     
-    //Zafran::Object box = Zafran::Object(Zafran::ZF_TRIANGLE);
-    Zafran::Object box;
+    Zafran::Object box = Zafran::Object(Zafran::ZF_TRIANGLE);
+    Material mat;
     
     double FPS;
 };

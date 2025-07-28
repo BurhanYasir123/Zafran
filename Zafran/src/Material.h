@@ -3,18 +3,12 @@
 #include "Core.h"
 #include "Color.h"
 
-namespace Zafran
+struct ZF_API Material
 {
-    class ZF_API Material
-    {
-    public:
-        Material();
-        ~Material();
+    Material() {}
 
-        void ApplyColor(Color color);
-        Color GetColor();
+    Material(Color _color) { color = _color; }
 
-    private:
-        Color m_color;
-    };
-}
+    Color color;
+};
+

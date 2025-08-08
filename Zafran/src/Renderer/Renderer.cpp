@@ -16,12 +16,7 @@ namespace Zafran
         DefaultShaderProgram = OpenGL::Loadshaders(vertPath.c_str(), fragPath.c_str());
         ZF_INFO("Made ID: " << DefaultShaderProgram);
     }
-#ifdef ZF_API_VULKAN
-    void Renderer::DrawObject(Object object)
-    {
-        ZF_INFO("Drawing... Mode:VULKAN type:" << object.GetType())
-    }
-#else
+
     void Renderer::DrawTriangle(int VertexBufferID, int ShaderProgramID, Color UniformColor)
     {
         glEnableVertexAttribArray(0);
@@ -61,5 +56,4 @@ namespace Zafran
             DrawTriangle(object.GetVB().y, object.GetProgramID(), object.material.color);
         }
     }
-#endif
 }

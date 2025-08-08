@@ -17,10 +17,6 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
-#ifdef ZF_API_VULKAN
-#define GLFW_INCLUDE_VULKAN
-#endif
-
 #include <GLFW/glfw3.h>
 
 #ifndef ZAFRAN_PLATFORM_LINUX

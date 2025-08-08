@@ -28,7 +28,7 @@ ifeq ($(origin AR), default)
   AR = ar
 endif
 RESCOMP = windres
-INCLUDES += -Isrc -Ivendor/GLFW/include -Ivendor/GLFW/deps/glad/include -Ivendor/imgui/src
+INCLUDES += -Isrc -Ivendor/GLFW/include -Ivendor/GLFW/deps/glad/include -Ivendor/GLFW/deps/glm -Ivendor/imgui/src
 FORCE_INCLUDE +=
 ALL_CPPFLAGS += $(CPPFLAGS) -MD -MP $(DEFINES) $(INCLUDES)
 ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
@@ -86,6 +86,7 @@ GENERATED += $(OBJDIR)/Application.o
 GENERATED += $(OBJDIR)/ImGuiRenderer.o
 GENERATED += $(OBJDIR)/Input.o
 GENERATED += $(OBJDIR)/Object.o
+GENERATED += $(OBJDIR)/ObjectManager.o
 GENERATED += $(OBJDIR)/Renderer.o
 GENERATED += $(OBJDIR)/Scene.o
 GENERATED += $(OBJDIR)/Window.o
@@ -93,6 +94,7 @@ OBJECTS += $(OBJDIR)/Application.o
 OBJECTS += $(OBJDIR)/ImGuiRenderer.o
 OBJECTS += $(OBJDIR)/Input.o
 OBJECTS += $(OBJDIR)/Object.o
+OBJECTS += $(OBJDIR)/ObjectManager.o
 OBJECTS += $(OBJDIR)/Renderer.o
 OBJECTS += $(OBJDIR)/Scene.o
 OBJECTS += $(OBJDIR)/Window.o
@@ -169,6 +171,9 @@ $(OBJDIR)/Input.o: src/Input.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Object.o: src/Object.cpp
+	@echo "$(notdir $<)"
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/ObjectManager.o: src/ObjectManager.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Renderer.o: src/Renderer/Renderer.cpp

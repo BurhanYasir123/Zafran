@@ -3,53 +3,37 @@
 class MyApp : public Zafran::Application
 {
     public:
-    void Init()
+
+    void PreInit()
     {
         SetWindow(Zafran::Window::Init(Vec2i(800,600), "Window"));
         Zafran::ImGuiRenderer::InitImGui(*this);
-        Zafran::Renderer::Init();
+        Zafran::Renderer::Init(GetWindow().GetWindowSize());
+    }
+
+    void Init()
+    {
+        box.SetScale(Vec2f(450,350));
 
         count = 0;
-
-        static const GLfloat triangleVertices[] = {
-             -0.5f, -0.5f, 0.0f,
-              0.5f, -0.5f, 0.0f,
-               0.0f,  0.5f, 0.0f
-        };
-
-        //mat = Material(Color(0,1,0));
-
-        
-        box.SetVerticies(triangleVertices, 9);
-        //box.material = mat;   
-
-
-        //CurrentScene.PushObject(box);
     }
 
     void Update()
     {
         glClearColor(0,0,0,1.0);
 
+
+
         Vec2f pos = Zafran::Input::GetMousePostion();
         if(Zafran::Input::IsKeyPressed(GLFW_KEY_SPACE))glClearColor(0.1,pos.y/600,pos.x/800, 1.0);
-        
-        // if(glfwVulkanSupported()) ZF_CORE_WARN("VULKAN SUPPORTED THIMBS UP");
-        // if(!glfwVulkanSupported()) ZF_CORE_WARN("VULKAN NOT SUPPORTED THIMBS DOWN");
         
         count++;
         ZF_INFO(count);
 
-        box.material = Material(Color(1,pos.y/600,0));
-
-        const GLfloat triangleVertices[] = {
-             -0.5f, -0.5f, 0.0f,
-              0.5f, -0.5f, 0.0f,
-              (pos.x/400)-1,  0.5f, 0.0f
-        };
-
+        box.material = Material(Color(1,pos.y/600,0)); 
         
-        box.SetVerticies(triangleVertices, 9);
+        box.SetTransform(Vec2f(Box_x, box.GetTransform().y));
+        ZF_WARN("TRANSFORM X " << box.GetTransform().x);
 
         box.Update();
         //CurrentScene.Update();
@@ -60,9 +44,12 @@ class MyApp : public Zafran::Application
 
             ZF_INFO(deltatime);
             
-            if(count%20 == 0) FPS = 1000.0f/deltatime;
+            if(count%10 == 0) FPS = 1000.0f/deltatime;
             
             ImGui::Text("FPS: %.2f", FPS);
+            ImGui::Text("Average FPS: %.2f",  1000.0/(time/count));
+
+            ImGui::SliderFloat("Position x", &Box_x, -400, 400);
 
         }ImGui::End();
 
@@ -75,8 +62,10 @@ class MyApp : public Zafran::Application
 
     int count;
     
-    Zafran::Object box = Zafran::Object(Zafran::ZF_TRIANGLE);
+    Zafran::Object box = Zafran::Object(Zafran::ZF_RECTANGLE);
     Material mat;
+
+    float Box_x;
     
     double FPS;
 };

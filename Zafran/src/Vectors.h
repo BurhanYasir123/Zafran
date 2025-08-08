@@ -1,5 +1,7 @@
 #pragma once
 
+#include <GLFW/glfw3.h> 
+
 struct Vec3f {
     float x, y, z;
     Vec3f(float _x = 0.0f, float _y = 0.0f, float _z = 0.0f) : x(_x), y(_y), z(_z) {}
@@ -19,7 +21,14 @@ struct Vec2f {
 struct Vec2i {
     int x, y;
     Vec2i(int _x = 0.0f, int _y = 0.0f) : x(_x), y(_y) {}
-    Vec2i operator+(const Vec2f& other) const {
+    Vec2i operator+(const Vec2i& other) const {
          return Vec2i(x + other.x, y + other.y);
+    }
+};
+struct Vec2ui {
+    unsigned int x, y;
+    Vec2ui(unsigned int _x = 0.0f, unsigned int _y = 0.0f) : x(_x), y(_y) {}
+    Vec2ui operator+(const Vec2ui& other) const {
+         return Vec2ui(x + other.x, y + other.y);
     }
 };

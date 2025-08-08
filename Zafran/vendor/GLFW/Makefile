@@ -29,7 +29,7 @@ ifeq ($(origin AR), default)
 endif
 RESCOMP = windres
 DEFINES += -D_GLFW_X11
-INCLUDES += -Iinclude -Ideps/glad/include
+INCLUDES += -Iinclude -Ideps/glad/include -Ideps/glm
 FORCE_INCLUDE +=
 ALL_CPPFLAGS += $(CPPFLAGS) -MD -MP $(DEFINES) $(INCLUDES)
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -fPIC

@@ -4,9 +4,11 @@
 namespace Zafran
 {
     int Renderer::DefaultShaderProgram = 0;
+    Vec2i Renderer::m_WindowSize = Vec2i(0,0);
 
-    void Renderer::Init()
+    void Renderer::Init(Vec2i WindowSize)
     {
+        m_WindowSize = WindowSize;
         std::filesystem::path shaderDir = std::filesystem::current_path() / "Shaders";
         std::string vertPath = (shaderDir / "Simple.vert").string();
         std::string fragPath = (shaderDir / "Simple.frag").string();
@@ -20,37 +22,43 @@ namespace Zafran
         ZF_INFO("Drawing... Mode:VULKAN type:" << object.GetType())
     }
 #else
+    void Renderer::DrawTriangle(int VertexBufferID, int ShaderProgramID, Color UniformColor)
+    {
+        glEnableVertexAttribArray(0);
+        glBindBuffer(GL_ARRAY_BUFFER, VertexBufferID);
+        glVertexAttribPointer(
+            0,
+            3,
+            GL_FLOAT,
+            GL_FALSE,
+            0,
+            (void*)0            
+        );
+            
+        
+        glUseProgram(ShaderProgramID);
+    
+        int ColorLocation = glGetUniformLocation(ShaderProgramID, "ourColor");        
+        ZF_INFO("Uniform location for 'ourColor': " << ColorLocation << " SHADER_ID: " << ShaderProgramID);
+        glUniform4f(ColorLocation, UniformColor.r, UniformColor.g, UniformColor.b, UniformColor.a);
+
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDisableVertexAttribArray(0);
+    }
+    
     void Renderer::DrawObject(Object object)
     {
         ZF_INFO("Drawing... Mode:OpenGL type:" << object.GetType())
-
+     
         if(object.GetType() == ZF_TRIANGLE)
         {
-            //ZF_WARN((object.m_numVerticies));
-            if(object.m_numVerticies != 3) { ZF_CORE_ERROR("Object Dosent Have Enough Vertcies for a Triangle");return; }
-
-            glEnableVertexAttribArray(0);
-            glBindBuffer(GL_ARRAY_BUFFER, object.GetVB());
-            glVertexAttribPointer(
-                0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
-                3,                  // size
-                GL_FLOAT,           // type
-                GL_FALSE,           // normalized?
-                0,                  // stride
-                (void*)0            // array buffer offset
-            );
-            
-        
-            glUseProgram(object.GetProgramID());
-    
-            int ColorLocation = glGetUniformLocation(object.GetProgramID(), "ourColor");        
-            glUniform4f(ColorLocation, object.material.color.r, object.material.color.g, object.material.color.b, object.material.color.a);  
-            ZF_INFO(object.material.color.r << " " << object.material.color.g << " " << object.material.color.b);          
-
-            ZF_INFO("Loaded ID: " << object.GetProgramID());
-            // Draw the triangle !
-            glDrawArrays(GL_TRIANGLES, 0, 3);
-            glDisableVertexAttribArray(0);
+            DrawTriangle(object.GetVB().x, object.GetProgramID(), object.material.color);
+        }
+        if(object.GetType() == ZF_RECTANGLE) 
+        {
+            ZF_INFO("Drawing with color: r=" << object.material.color.r << ", g=" << object.material.color.g << ", b=" << object.material.color.b);
+            DrawTriangle(object.GetVB().x, object.GetProgramID(), object.material.color);
+            DrawTriangle(object.GetVB().y, object.GetProgramID(), object.material.color);
         }
     }
 #endif

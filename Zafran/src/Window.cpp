@@ -2,6 +2,7 @@
 
 namespace Zafran
 {
+    Vec2i Window::m_size = Vec2i(0,0);
     Window::Window()
     {
     }
@@ -14,6 +15,7 @@ namespace Zafran
     {
         if(!glfwInit()) ZF_CORE_ERROR("Coudnt Initialize GLFW");
         GLFWwindow* window = glfwCreateWindow(size.x, size.y, title, NULL, NULL);
+        m_size = size;
         if (!window)
         {
             glfwTerminate();

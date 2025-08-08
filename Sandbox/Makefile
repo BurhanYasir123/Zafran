@@ -28,7 +28,7 @@ ifeq ($(origin AR), default)
   AR = ar
 endif
 RESCOMP = windres
-INCLUDES += -I../Zafran -I../Zafran/src -I../Zafran/vendor/GLFW/include -I../Zafran/vendor/GLFW/deps/glad/include -Isrc -I../Zafran/vendor/imgui/src
+INCLUDES += -I../Zafran -I../Zafran/src -I../Zafran/vendor/GLFW/include -I../Zafran/vendor/GLFW/deps/glad/include -I../Zafran/vendor/GLFW/deps/glm -Isrc -I../Zafran/vendor/imgui/src
 FORCE_INCLUDE +=
 ALL_CPPFLAGS += $(CPPFLAGS) -MD -MP $(DEFINES) $(INCLUDES)
 ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)

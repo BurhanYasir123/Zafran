@@ -12,6 +12,7 @@ namespace Zafran
         Application();
         ~Application();
 
+        virtual void PreInit();
         virtual void Init();
         virtual void Update();
         virtual void OnEvent();
@@ -25,5 +26,7 @@ namespace Zafran
         Window m_window;
         bool ImGui;
         int deltatime;
+        int time;
+        bool WindowInitDone;
     };
 }

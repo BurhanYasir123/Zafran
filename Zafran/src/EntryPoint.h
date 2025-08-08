@@ -6,16 +6,20 @@
 #include "ImGui/ImGuiRenderer.h"
 #include "Renderer/Renderer.h"
 #include "Input.h"
+#include "ObjectManager.h"
 
 namespace Zafran
 {
     void RunApplication(Application& app)
     {
+        app.PreInit();
+
+        ObjectManager::EvaluateQueue_Init(app.GetWindow().GetWindowSize());
+        
         app.Init();
         app.deltatime = 1000/60;
-
-        Input::SetWindow(app.GetWindow().GetGlfwWindow());
-        //Renderer::Init();     
+     
+        Input::SetWindow(app.GetWindow().GetGlfwWindow());   
    
         while(!(app.ShouldExit() || glfwWindowShouldClose(app.GetWindow().GetGlfwWindow())))
         {
@@ -36,10 +40,11 @@ namespace Zafran
             
             glfwSwapBuffers(app.GetWindow().GetGlfwWindow());
             
-            // Deltatime Calcualtion
+            // Deltatime and Time Calcualtion
             auto end = std::chrono::high_resolution_clock::now();
             std::chrono::duration<float> duration = end - start;
             app.deltatime = duration.count() * 1000;
+            app.time += app.deltatime;
         }
         // ImGui End 
         if(app.ImGui) ImGuiRenderer::EndImGui();

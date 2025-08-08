@@ -18,6 +18,7 @@ project "Zafran"
         "%{prj.name}/src",
         "%{prj.name}/vendor/GLFW/include",
         "Zafran/vendor/GLFW/deps/glad/include",
+        "Zafran/vendor/GLFW/deps/glm",
         "Zafran/vendor/imgui/src"
     }
 
@@ -56,6 +57,7 @@ project "Sandbox"
         "Zafran/src",
         "Zafran/vendor/GLFW/include",
         "Zafran/vendor/GLFW/deps/glad/include",
+        "Zafran/vendor/GLFW/deps/glm",
         "Sandbox/src",
         "Zafran/vendor/imgui/src"
     }
@@ -90,12 +92,14 @@ project "OpenGL"
         "Zafran/vendor/GLFW/src/**.h",
         "Zafran/vendor/GLFW/src/**.c",
         "Zafran/vendor/GLFW/deps/glad/src/**.c",
-        "Zafran/vendor/GLFW/deps/glad/include/glad/**.h"
+        "Zafran/vendor/GLFW/deps/glad/include/glad/**.h",
+        "Zafran/vendor/GLFW/deps/glm/**.hpp"
     }
 
     includedirs {
         "Zafran/vendor/GLFW/include",
-        "Zafran/vendor/GLFW/deps/glad/include"
+        "Zafran/vendor/GLFW/deps/glad/include",
+        "Zafran/vendor/GLFW/deps/glm"
     }
 
     filter "system:linux"
@@ -118,7 +122,8 @@ project "ImGui"
         "Zafran/vendor/imgui",
         "/usr/include/freetype2",
         "Zafran/vendor/GLFW/include",
-        "Zafran/vendor/GLFW/deps/glad/include"
+        "Zafran/vendor/GLFW/deps/glad/include",
+        "Zafran/vendor/GLFW/deps/glm"
     }
 
     links {

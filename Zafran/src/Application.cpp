@@ -12,6 +12,11 @@ namespace Zafran
         
     }
 
+    void Application::PreInit()
+    {
+        
+    }
+
     void Application::Init()
     {
 
@@ -44,6 +49,7 @@ namespace Zafran
 
     void Application::SetWindow(Window window)
     {
+        WindowInitDone = true;
         m_window = window;
     }
 

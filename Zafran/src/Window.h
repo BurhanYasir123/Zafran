@@ -13,8 +13,10 @@ namespace Zafran
 
         GLFWwindow* GetGlfwWindow() { return m_window; };
         void SetGlfwWindow(GLFWwindow* window) { m_window = window; };
+        Vec2i GetWindowSize() { return m_size; };
 
     private:
         GLFWwindow* m_window;
+        static Vec2i m_size;
     };
 }

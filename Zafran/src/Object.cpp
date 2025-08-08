@@ -1,36 +1,61 @@
 #include "Color.h"
 #include "Object.h"
 #include "Renderer/Renderer.h"
+#include "ObjectManager.h"
 
 namespace Zafran
 {
     Object::Object(Object_Type type) : m_type(type)
     {
         ZF_INFO("HI");
-
-
+        
+        m_ProgramID = NULL;
+        VB.x = NULL;
+        VB.y = NULL;
+        
+        ObjectManager::QueueObject(this);
     }
 
     Object::Object()
     {
-        VB = NULL;
+       
     }
-
     Object::~Object()
     {
     }
 
     void Object::Update()
     {
-        //ZF_INFO("Object.Uodate");
         if(show) Renderer::DrawObject(*this);
-        ZF_INFO(material.color.b);
+
+        ZF_INFO("Window_Size: " << Window_Size.x << " " << Window_Size.y);
+
+        if(m_type == ZF_RECTANGLE)
+        {
+            GLfloat Verticies[] = {
+                (m_transform.x - m_scale.x/2)/(Window_Size.x/2), (m_transform.y - m_scale.y / 2)/(Window_Size.y/2), 0.0f,
+                (m_transform.x + m_scale.x/2)/(Window_Size.x/2), (m_transform.y - m_scale.y / 2)/(Window_Size.y/2), 0.0f,
+                (m_transform.x - m_scale.x/2)/(Window_Size.x/2), (m_transform.y + m_scale.y / 2)/(Window_Size.y/2), 0.0f,
+                (m_transform.x + m_scale.x/2)/(Window_Size.x/2), (m_transform.y + m_scale.y / 2)/(Window_Size.y/2), 0.0f,
+            };
+
+            ZF_INFO("transform:" << m_transform.x << " " << m_transform.y);
+            SetVerticies(Verticies, 4);
+        }
+        if(m_type == ZF_TRIANGLE)
+        {
+            GLfloat Verticies[] = {
+                (m_transform.x - m_scale.x/2)/(Window_Size.x/2)-1.0f, (m_transform.y - m_scale.y / 2)/(Window_Size.y/2)-1.0f, 0.0f,
+                (m_transform.x + m_scale.x/2)/(Window_Size.x/2)-1.0f, (m_transform.y - m_scale.y / 2)/(Window_Size.y/2)-1.0f, 0.0f,
+                ( m_transform.x )  /  (Window_Size.x / 2 )     -1.0f, (m_transform.y + m_scale.y / 2)/(Window_Size.y/2)-1.0f, 0.0f
+            };
+            SetVerticies(Verticies, 3);
+        }
     }
 
-    void Object::ToggleInvisible()
+    void Object::SetInvisible(bool Invisible)
     {
-        if(show)  { show = false; return;}
-        if(!show) { show = true;  return;}
+        show = Invisible;
     }
 
     bool Object::IsInvisible()
@@ -38,16 +63,15 @@ namespace Zafran
         return show;
     }
 
-    void Object::AddTransform(Vec2f transform)
+    void Object::SetTransform(Vec2f transform)
     {
-        m_transform.x = m_transform.x + transform.x; 
-        m_transform.y = m_transform.y + transform.y; 
+        if(m_ProgramID == NULL) m_ProgramID = Renderer::GetDefaultShaderProgram();
+        m_transform = transform;
     }
 
-    void Object::AddScale(Vec2f scale)
+    void Object::SetScale(Vec2f scale)
     {
-        m_scale.x = m_scale.x + scale.x; 
-        m_scale.y = m_scale.y + scale.y; 
+        m_scale = scale;
     }
 
     Vec2f Object::GetTransform()
@@ -65,22 +89,47 @@ namespace Zafran
         return m_type;
     }
 
-    void Object::SetVerticies(const GLfloat* Verticies, int count)
+    void Object::SetVerticies(const GLfloat* Verticies, int NumOfVerticies)
     {
-        m_ProgramID = Renderer::GetDefaultShaderProgram();
-        if(VB == NULL) glGenBuffers(1, &VB);
+        if(VB.x == NULL) glGenBuffers(1, &VB.x);
+        if(VB.y == NULL && m_type == ZF_RECTANGLE) glGenBuffers(1, &VB.y);
 
         m_Verticies = Verticies;
-        m_numVerticies = count / 3; // assuming 2 floats per vertex
 
-        //ZF_WARN("SetVerticies called with count: " << count);
-        for(int i=0;i!=6;i++)
+        if(NumOfVerticies < 3 && m_type == ZF_TRIANGLE)  ZF_WARN("Too few Verticies for a Triangle, This may result in a glitch, VertexCount: "  << NumOfVerticies);
+        if(NumOfVerticies < 4 && m_type == ZF_RECTANGLE) ZF_WARN("Too few Verticies for a Rectangle, This may result in a glitch, VertexCount: " << NumOfVerticies);
+
+        if(NumOfVerticies > 3 && m_type == ZF_TRIANGLE)  ZF_WARN("Too many Verticies for a Triangle, VertexCount: "  << NumOfVerticies);
+        if(NumOfVerticies > 4 && m_type == ZF_RECTANGLE) ZF_WARN("Too many Verticies for a Rectangle, VertexCount: " << NumOfVerticies);
+
+        m_numVerticies = NumOfVerticies;
+
+        if(m_type == ZF_TRIANGLE)
         {
-            ZF_WARN(Verticies[i] << " ;");
+            glBindBuffer(GL_ARRAY_BUFFER, VB.x);
+            glBufferData(GL_ARRAY_BUFFER, sizeof(float) * NumOfVerticies * 3, Verticies, GL_STREAM_DRAW);
         }
+        if(m_type == ZF_RECTANGLE)
+        {
+            float V1[] = {
+                Verticies[0], Verticies[1], Verticies[2],
+                Verticies[3], Verticies[4], Verticies[5],
+                Verticies[6], Verticies[7], Verticies[8]
+            };
+            float V2[] = {
+                Verticies[3], Verticies[4], Verticies[5],  
+                Verticies[9], Verticies[10], Verticies[11], 
+                Verticies[6], Verticies[7], Verticies[8]
+            };
 
-        glBindBuffer(GL_ARRAY_BUFFER, VB);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(float) * count, Verticies, GL_STREAM_DRAW);
+            glBindBuffer(GL_ARRAY_BUFFER, VB.x);
+            glBufferData(GL_ARRAY_BUFFER, sizeof(V1), V1, GL_STREAM_DRAW);
+            
+            glBindBuffer(GL_ARRAY_BUFFER, VB.y);
+            glBufferData(GL_ARRAY_BUFFER, sizeof(V2), V2, GL_STREAM_DRAW);
+
+            //if(VB+1 != VB2) ZF_ERROR("BUFFER IDS ARE OFF BY: " << VB - VB2)
+        }
     }
 
     const float* Object::GetVerticies()
@@ -88,7 +137,7 @@ namespace Zafran
         return m_Verticies;
     }
 
-    GLuint Object::GetVB()
+    Vec2ui Object::GetVB()
     {
         return VB;
     }

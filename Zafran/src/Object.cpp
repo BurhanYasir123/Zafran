@@ -7,6 +7,8 @@ namespace Zafran
 {
     Object::Object(Object_Type type) : m_type(type)
     {
+        if(Status::PreInitStarted) {ZF_ERROR("Objects shall not be Initialized in PreInit"); return;}
+
         ZF_INFO("HI");
         
         m_ProgramID = NULL;
@@ -26,6 +28,8 @@ namespace Zafran
 
     void Object::Update()
     {
+        if(Status::RayTracingEnabled) return;
+
         if(show) Renderer::DrawObject(*this);
 
         ZF_INFO("Window_Size: " << Window_Size.x << " " << Window_Size.y);
@@ -45,9 +49,9 @@ namespace Zafran
         if(m_type == ZF_TRIANGLE)
         {
             GLfloat Verticies[] = {
-                (m_transform.x - m_scale.x/2)/(Window_Size.x/2)-1.0f, (m_transform.y - m_scale.y / 2)/(Window_Size.y/2)-1.0f, 0.0f,
-                (m_transform.x + m_scale.x/2)/(Window_Size.x/2)-1.0f, (m_transform.y - m_scale.y / 2)/(Window_Size.y/2)-1.0f, 0.0f,
-                ( m_transform.x )  /  (Window_Size.x / 2 )     -1.0f, (m_transform.y + m_scale.y / 2)/(Window_Size.y/2)-1.0f, 0.0f
+                (m_transform.x - m_scale.x/2)/(Window_Size.x/2), (m_transform.y - m_scale.y / 2)/(Window_Size.y/2), 0.0f,
+                (m_transform.x + m_scale.x/2)/(Window_Size.x/2), (m_transform.y - m_scale.y / 2)/(Window_Size.y/2), 0.0f,
+                ( m_transform.x )  /  (Window_Size.x / 2 )     , (m_transform.y + m_scale.y / 2)/(Window_Size.y/2), 0.0f
             };
             SetVerticies(Verticies, 3);
         }

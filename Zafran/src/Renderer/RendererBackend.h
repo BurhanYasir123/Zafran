@@ -20,9 +20,9 @@ namespace Zafran{
     	    	VertexShaderCode = sstr.str();
     	    	VertexShaderStream.close();
     	    }else{
-    	    	printf("Impossible to open %s. Are you in the right directory ? Don't forget to read the FAQ !\n", vertex_file_path);
+    	    	ZF_ERROR("Impossible to open " << vertex_file_path << ". Are you in the right directory ? Don't forget to read the FAQ !\n");
     	    	getchar();
-    	    	return 0;
+    	    	return 0;   
     	    }
 
     	    // Read the Fragment Shader code from the file
@@ -49,7 +49,7 @@ namespace Zafran{
     	    if ( InfoLogLength > 0 ){
     	    	std::vector<char> VertexShaderErrorMessage(InfoLogLength+1);
     	    	glGetShaderInfoLog(VertexShaderID, InfoLogLength, NULL, &VertexShaderErrorMessage[0]);
-    	    	printf("%s\n", &VertexShaderErrorMessage[0]);
+    	    	ZF_ERROR(&VertexShaderErrorMessage[0]);
     	    }
 
     	    // Compile Fragment Shader
@@ -63,7 +63,7 @@ namespace Zafran{
     	    if ( InfoLogLength > 0 ){
     	    	std::vector<char> FragmentShaderErrorMessage(InfoLogLength+1);
     	    	glGetShaderInfoLog(FragmentShaderID, InfoLogLength, NULL, &FragmentShaderErrorMessage[0]);
-    	    	printf("%s\n", &FragmentShaderErrorMessage[0]);
+    	    	ZF_ERROR(&FragmentShaderErrorMessage[0]);
     	    }
 
     	    // Link the program
@@ -78,7 +78,7 @@ namespace Zafran{
     	    if ( InfoLogLength > 0 ){
     	    	std::vector<char> ProgramErrorMessage(InfoLogLength+1);
     	    	glGetProgramInfoLog(ProgramID, InfoLogLength, NULL, &ProgramErrorMessage[0]);
-    	    	printf("%s\n", &ProgramErrorMessage[0]);
+    	    	ZF_ERROR(&ProgramErrorMessage[0]);
     	    }
         
     	    glDetachShader(ProgramID, VertexShaderID);

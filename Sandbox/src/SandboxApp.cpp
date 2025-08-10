@@ -6,14 +6,16 @@ class MyApp : public Zafran::Application
 
     void PreInit()
     {
-        SetWindow(Zafran::Window::Init(Vec2i(800,600), "Window"));
+        SetWindow(Zafran::Window::Init(Vec2i(1000,600), "Window"));
         Zafran::ImGuiRenderer::InitImGui(*this);
         Zafran::Renderer::Init(GetWindow().GetWindowSize());
+        Zafran::Renderer::EnableRaytracing();
     }
 
     void Init()
     {
         box.SetScale(Vec2f(450,350));
+        box2.SetScale(Vec2f(500,300));
 
         count = 0;
     }
@@ -31,11 +33,13 @@ class MyApp : public Zafran::Application
         ZF_INFO(count);
 
         box.material = Material(Color(1,pos.y/600,0)); 
+        box2.material = Material(Color(0.4,0.3, 0.7));
         
         box.SetTransform(Vec2f(Box_x, box.GetTransform().y));
         ZF_WARN("TRANSFORM X " << box.GetTransform().x);
 
-        box.Update();
+        box2.Update();
+        //box.Update();
         //CurrentScene.Update();
         
         if(ImGui::Begin("Main"))
@@ -62,8 +66,8 @@ class MyApp : public Zafran::Application
 
     int count;
     
-    Zafran::Object box = Zafran::Object(Zafran::ZF_RECTANGLE);
-    Material mat;
+    Zafran::Object box = Zafran::Object(Zafran::ZF_TRIANGLE);
+    Zafran::Object box2 = Zafran::Object(Zafran::ZF_RECTANGLE);
 
     float Box_x;
     

@@ -89,6 +89,7 @@ GENERATED += $(OBJDIR)/Object.o
 GENERATED += $(OBJDIR)/ObjectManager.o
 GENERATED += $(OBJDIR)/Renderer.o
 GENERATED += $(OBJDIR)/Scene.o
+GENERATED += $(OBJDIR)/Stats.o
 GENERATED += $(OBJDIR)/Window.o
 OBJECTS += $(OBJDIR)/Application.o
 OBJECTS += $(OBJDIR)/ImGuiRenderer.o
@@ -97,6 +98,7 @@ OBJECTS += $(OBJDIR)/Object.o
 OBJECTS += $(OBJDIR)/ObjectManager.o
 OBJECTS += $(OBJDIR)/Renderer.o
 OBJECTS += $(OBJDIR)/Scene.o
+OBJECTS += $(OBJDIR)/Stats.o
 OBJECTS += $(OBJDIR)/Window.o
 
 # Rules
@@ -180,6 +182,9 @@ $(OBJDIR)/Renderer.o: src/Renderer/Renderer.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Scene.o: src/Scene.cpp
+	@echo "$(notdir $<)"
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Stats.o: src/Stats.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Window.o: src/Window.cpp

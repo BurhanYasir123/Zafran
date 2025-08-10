@@ -12,17 +12,32 @@ namespace Zafran
 {
     void RunApplication(Application& app)
     {
+        Status::Init();
+
+        Status::PreInitStarted = true;
+
         app.PreInit();
 
-        ObjectManager::EvaluateQueue_Init(app.GetWindow().GetWindowSize());
+        Status::PreInitPassed = true;
+        Status::PreInitStarted = false;
+
+        Status::Global_WindowSizeX = app.GetWindow().GetWindowSize().x;
+        Status::Global_WindowSizeY = app.GetWindow().GetWindowSize().y;
+
+        if(!Status::RayTracingEnabled) ObjectManager::EvaluateQueue_Init();
         
         app.Init();
         app.deltatime = 1000/60;
-     
+
+        Status::InitPassed = true;
+
         Input::SetWindow(app.GetWindow().GetGlfwWindow());   
    
+        if(Status::RayTracingEnabled) Renderer::PrepareRayTracing();
+
         while(!(app.ShouldExit() || glfwWindowShouldClose(app.GetWindow().GetGlfwWindow())))
         {
+            
             // Deltatime calculation
             auto start = std::chrono::high_resolution_clock::now();
             
@@ -32,8 +47,16 @@ namespace Zafran
             if(app.ImGui) ImGuiRenderer::InitFrame();
             
             glClear(GL_COLOR_BUFFER_BIT);
+
+            // Per-Frame Status 
+
+            Status::IsAppControling = false;
             
             app.Update();
+
+            Status::IsAppControling = true;
+
+            if(Status::RayTracingEnabled) Renderer::RayTraceFrame();
             
             // For ImGui Render
             if(app.ImGui) ImGuiRenderer::RenderFrame();

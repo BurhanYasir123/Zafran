@@ -18,10 +18,16 @@ namespace Zafran
         static void DrawObject(Object object);
         static void DrawTriangle(int VertexBufferID, int ShaderProgramID, Color UniformColor);
         static void ColorBackground(Color color) { glClearColor(color.r, color.g, color.b, color.a); };
+        static void EnableRaytracing();
+        static void RayTraceFrame();
+        static void PrepareRayTracing(); 
 
         static int GetDefaultShaderProgram() { return DefaultShaderProgram; };
     private:
         static int DefaultShaderProgram;
+        static int RayTraceShaderProgram;
         static Vec2i m_WindowSize;
+        static GLuint RayTraceSurfaceVB1;
+        static GLuint RayTraceSurfaceVB2;
     };
 }

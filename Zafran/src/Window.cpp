@@ -13,20 +13,27 @@ namespace Zafran
 
     Window Window::Init(Vec2i size, const char* title)
     {
-        if(!glfwInit()) ZF_CORE_ERROR("Coudnt Initialize GLFW");
-        GLFWwindow* window = glfwCreateWindow(size.x, size.y, title, NULL, NULL);
-        m_size = size;
-        if (!window)
-        {
-            glfwTerminate();
-            ZF_CORE_ERROR("Window coudnt be created");
+        if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+            SDL_Log("SDL_Init failed: %s", SDL_GetError());
+            SDL_Quit();
         }
-        glfwMakeContextCurrent(window);
-        gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-        glViewport(0, 0, size.x, size.y);
+        SDL_Window* window = SDL_CreateWindow(title, size.x, size.y, SDL_WINDOW_OPENGL);
+        m_size = size;
+        if (!window) {
+            SDL_Log("SDL_CreateWindow failed: %s", SDL_GetError());
+            SDL_Quit();
+        }
+
+        SDL_Renderer* renderer = SDL_CreateRenderer(window, NULL);
+        if (!renderer) {
+            SDL_Log("SDL_CreateRenderer failed: %s", SDL_GetError());
+            SDL_DestroyWindow(window);
+            SDL_Quit();
+        }
 
         Window _window = Window();
-        _window.SetGlfwWindow(window);
+        _window.SetSDL3Window(window);
+        _window.Renderer = renderer;
         
         return _window;
     }

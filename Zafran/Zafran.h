@@ -8,7 +8,6 @@
 #include "Core.h"
 #include "EntryPoint.h"
 #include "Window.h"
-#include "ImGui/ImGuiRenderer.h"
 #include "Input.h"
-#include "Timer.h"
+#include "Core.h"
 #include "Renderer/Renderer.h"

@@ -24,9 +24,10 @@ namespace Zafran
     
         Scene CurrentScene;
         Window m_window;
-        bool ImGui;
         int deltatime;
         int time;
         bool WindowInitDone;
+        SDL_Event m_event;
+        SDL_Renderer* renderer;
     };
 }

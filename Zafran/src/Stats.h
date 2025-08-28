@@ -1,15 +1,12 @@
 #pragma once
 
-class Status
+namespace Status
 {
-public:
-    static bool PreInitPassed;
-    static bool InitPassed;
-    static bool RayTracingEnabled;
-    static bool IsAppControling;
-    static int Global_WindowSizeX;
-    static int Global_WindowSizeY;
-    static bool PreInitStarted;
-
-    static void Init();
+    static bool PreInitPassed     = false;
+    static bool InitPassed        = false;
+    static bool RayTracingEnabled = false;
+    static bool IsAppControling   = false;
+    static int Global_WindowSizeX = 0;
+    static int Global_WindowSizeY = 0;
+    static bool PreInitStarted    = false;
 };

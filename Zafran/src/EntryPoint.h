@@ -3,7 +3,6 @@
 #include "Application.h"
 #include "Object.h"
 
-#include "ImGui/ImGuiRenderer.h"
 #include "Renderer/Renderer.h"
 #include "Input.h"
 #include "ObjectManager.h"
@@ -12,56 +11,41 @@ namespace Zafran
 {
     void RunApplication(Application& app)
     {
-        Status::Init();
-
         Status::PreInitStarted = true;
 
         app.PreInit();
+
+        app.renderer = app.GetWindow().Renderer;
 
         Status::PreInitPassed = true;
         Status::PreInitStarted = false;
 
         Status::Global_WindowSizeX = app.GetWindow().GetWindowSize().x;
         Status::Global_WindowSizeY = app.GetWindow().GetWindowSize().y;
-
-        if(!Status::RayTracingEnabled) ObjectManager::EvaluateQueue_Init();
         
         app.Init();
         app.deltatime = 1000/60;
 
         Status::InitPassed = true;
 
-        Input::SetWindow(app.GetWindow().GetGlfwWindow());   
-   
-        if(Status::RayTracingEnabled) Renderer::PrepareRayTracing();
+        Input::SetWindow(app.GetWindow().GetSDL3Window());   
 
-        while(!(app.ShouldExit() || glfwWindowShouldClose(app.GetWindow().GetGlfwWindow())))
+        bool Running = true;
+
+        while(Running)
         {
-            
             // Deltatime calculation
             auto start = std::chrono::high_resolution_clock::now();
             
-            glfwPollEvents();
-            
-            // For ImGui Frames
-            if(app.ImGui) ImGuiRenderer::InitFrame();
-            
-            glClear(GL_COLOR_BUFFER_BIT);
+            SDL_PollEvent(&app.m_event);
+
+            if(app.m_event.type == SDL_EVENT_QUIT) { Running = false; return; }
 
             // Per-Frame Status 
 
-            Status::IsAppControling = false;
-            
             app.Update();
-
-            Status::IsAppControling = true;
-
-            if(Status::RayTracingEnabled) Renderer::RayTraceFrame();
             
-            // For ImGui Render
-            if(app.ImGui) ImGuiRenderer::RenderFrame();
-            
-            glfwSwapBuffers(app.GetWindow().GetGlfwWindow());
+            SDL_RenderPresent(app.renderer);
             
             // Deltatime and Time Calcualtion
             auto end = std::chrono::high_resolution_clock::now();
@@ -69,10 +53,9 @@ namespace Zafran
             app.deltatime = duration.count() * 1000;
             app.time += app.deltatime;
         }
-        // ImGui End 
-        if(app.ImGui) ImGuiRenderer::EndImGui();
         
-        glfwTerminate();
-        glfwDestroyWindow(app.GetWindow().GetGlfwWindow());
+        SDL_DestroyRenderer(app.renderer);
+        SDL_DestroyWindow(app.GetWindow().GetSDL3Window());
+        SDL_Quit();
     }
 }

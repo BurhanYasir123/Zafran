@@ -28,10 +28,12 @@ ifeq ($(origin AR), default)
   AR = ar
 endif
 RESCOMP = windres
-INCLUDES += -Isrc -Ivendor/GLFW/include -Ivendor/GLFW/deps/glad/include -Ivendor/GLFW/deps/glm -Ivendor/imgui/src
+INCLUDES += -Isrc -Ivendor/SDL3/include -Ivendor/glm
 FORCE_INCLUDE +=
 ALL_CPPFLAGS += $(CPPFLAGS) -MD -MP $(DEFINES) $(INCLUDES)
 ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
+LIBS += -lSDL3
+LDDEPS +=
 LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
 define PREBUILDCMDS
 endef
@@ -45,13 +47,10 @@ OBJDIR = ../bin-int/Debug-linux-x86_64/Zafran
 DEFINES += -DZAFRAN_PLATFORM_LINUX -DZAFRAN_BUILD_DLL -DZAFRAN_DEBUG
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -fPIC -g
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -fPIC -g
-LIBS += vendor/GLFW/bin/Debug/libOpenGL.a vendor/imgui/bin/Debug/libImGui.a
-LDDEPS += vendor/GLFW/bin/Debug/libOpenGL.a vendor/imgui/bin/Debug/libImGui.a
-ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -shared -Wl,-soname=libZafran.so
+ALL_LDFLAGS += $(LDFLAGS) -Lvendor/SDL3/lib -L/usr/lib64 -m64 -shared -Wl,-soname=libZafran.so
 define POSTBUILDCMDS
 	@echo Running postbuild commands
-	cp -rf ../bin/Debug-linux-x86_64/Zafran/libZafran.so ../bin/Debug-linux-x86_64/Sandbox
-	cp -rf ../Zafran/src/Renderer/Shaders ../bin/Debug-linux-x86_64/Sandbox/Shaders
+	cp -rf ../bin/Debug-linux-x86_64/Zafran/libZafran.so bin/Debug-linux-x86_64/Sandbox
 endef
 
 else ifeq ($(config),release)
@@ -61,13 +60,10 @@ OBJDIR = ../bin-int/Release-linux-x86_64/Zafran
 DEFINES += -DZAFRAN_PLATFORM_LINUX -DZAFRAN_BUILD_DLL -DZAFRAN_RELEASE
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -O2 -fPIC
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -O2 -fPIC
-LIBS += vendor/GLFW/bin/Release/libOpenGL.a vendor/imgui/bin/Release/libImGui.a
-LDDEPS += vendor/GLFW/bin/Release/libOpenGL.a vendor/imgui/bin/Release/libImGui.a
-ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -shared -Wl,-soname=libZafran.so -s
+ALL_LDFLAGS += $(LDFLAGS) -Lvendor/SDL3/lib -L/usr/lib64 -m64 -shared -Wl,-soname=libZafran.so -s
 define POSTBUILDCMDS
 	@echo Running postbuild commands
-	cp -rf ../bin/Release-linux-x86_64/Zafran/libZafran.so ../bin/Release-linux-x86_64/Sandbox
-	cp -rf ../Zafran/src/Renderer/Shaders ../bin/Release-linux-x86_64/Sandbox/Shaders
+	cp -rf ../bin/Release-linux-x86_64/Zafran/libZafran.so bin/Release-linux-x86_64/Sandbox
 endef
 
 endif
@@ -83,22 +79,18 @@ GENERATED :=
 OBJECTS :=
 
 GENERATED += $(OBJDIR)/Application.o
-GENERATED += $(OBJDIR)/ImGuiRenderer.o
 GENERATED += $(OBJDIR)/Input.o
 GENERATED += $(OBJDIR)/Object.o
 GENERATED += $(OBJDIR)/ObjectManager.o
 GENERATED += $(OBJDIR)/Renderer.o
 GENERATED += $(OBJDIR)/Scene.o
-GENERATED += $(OBJDIR)/Stats.o
 GENERATED += $(OBJDIR)/Window.o
 OBJECTS += $(OBJDIR)/Application.o
-OBJECTS += $(OBJDIR)/ImGuiRenderer.o
 OBJECTS += $(OBJDIR)/Input.o
 OBJECTS += $(OBJDIR)/Object.o
 OBJECTS += $(OBJDIR)/ObjectManager.o
 OBJECTS += $(OBJDIR)/Renderer.o
 OBJECTS += $(OBJDIR)/Scene.o
-OBJECTS += $(OBJDIR)/Stats.o
 OBJECTS += $(OBJDIR)/Window.o
 
 # Rules
@@ -166,9 +158,6 @@ endif
 $(OBJDIR)/Application.o: src/Application.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/ImGuiRenderer.o: src/ImGui/ImGuiRenderer.cpp
-	@echo "$(notdir $<)"
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Input.o: src/Input.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
@@ -182,9 +171,6 @@ $(OBJDIR)/Renderer.o: src/Renderer/Renderer.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Scene.o: src/Scene.cpp
-	@echo "$(notdir $<)"
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/Stats.o: src/Stats.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Window.o: src/Window.cpp

@@ -16,23 +16,24 @@ project "Zafran"
 
     includedirs {
         "%{prj.name}/src",
-        "%{prj.name}/vendor/GLFW/include",
-        "Zafran/vendor/GLFW/deps/glad/include",
-        "Zafran/vendor/GLFW/deps/glm",
-        "Zafran/vendor/imgui/src"
+        "Zafran/vendor/SDL3/include",
+        "Zafran/vendor/glm"
+    }
+
+    libdirs {
+        "Zafran/vendor/SDL3/lib"
     }
 
     links {
-        "OpenGL",
-        "ImGui"
+        "SDL3"
     }
 
     filter "system:linux"
         systemversion "latest"
         defines { "ZAFRAN_PLATFORM_LINUX", "ZAFRAN_BUILD_DLL" }
         postbuildcommands {
-            ("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox"),
-            ("{COPYDIR} ../Zafran/src/Renderer/Shaders ../bin/%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}/Sandbox/Shaders")
+            ("{COPY} %{cfg.buildtarget.relpath} ./bin/" .. outputdir .. "/Sandbox"),
+            --("{COPYDIR} ./Zafran/src/Renderer/Shaders ./bin/%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}/Sandbox/Shaders")
         }
 
     filter "configurations:Debug"
@@ -55,17 +56,19 @@ project "Sandbox"
     includedirs {
         "Zafran/",
         "Zafran/src",
-        "Zafran/vendor/GLFW/include",
-        "Zafran/vendor/GLFW/deps/glad/include",
-        "Zafran/vendor/GLFW/deps/glm",
+        "Zafran/vendor/glm",
         "Sandbox/src",
-        "Zafran/vendor/imgui/src"
+        "Zafran/vendor/SDL3/include"
+    }
+
+
+    libdirs {
+        "Zafran/vendor/SDL3/lib"
     }
 
     links {
         "Zafran",
-        "OpenGL",
-        "ImGui"
+        "SDL3"
     }
 
     filter "system:linux"
@@ -79,88 +82,3 @@ project "Sandbox"
     filter "configurations:Release"
         defines "SANDBOX_RELEASE"
         optimize "On"
-
-project "OpenGL"
-    location "Zafran/vendor/GLFW"
-    kind "StaticLib"
-    language "C"
-    staticruntime "on"
-    pic "On"
-
-    files {
-        "Zafran/vendor/GLFW/include/GLFW/**.h",
-        "Zafran/vendor/GLFW/src/**.h",
-        "Zafran/vendor/GLFW/src/**.c",
-        "Zafran/vendor/GLFW/deps/glad/src/**.c",
-        "Zafran/vendor/GLFW/deps/glad/include/glad/**.h",
-        "Zafran/vendor/GLFW/deps/glm/**.hpp"
-    }
-
-    includedirs {
-        "Zafran/vendor/GLFW/include",
-        "Zafran/vendor/GLFW/deps/glad/include",
-        "Zafran/vendor/GLFW/deps/glm"
-    }
-
-    filter "system:linux"
-        systemversion "latest"
-        defines { "_GLFW_X11" }
-
-project "ImGui"
-    location "Zafran/vendor/imgui"
-    kind "StaticLib"
-    language "C++"
-    staticruntime "on"
-    pic "On"
-    
-    files {
-        "Zafran/vendor/imgui/src/**.cpp",
-        "Zafran/vendor/imgui/src/**.h"
-    }
-
-    includedirs {
-        "Zafran/vendor/imgui",
-        "/usr/include/freetype2",
-        "Zafran/vendor/GLFW/include",
-        "Zafran/vendor/GLFW/deps/glad/include",
-        "Zafran/vendor/GLFW/deps/glm"
-    }
-
-    links {
-        "freetype",
-        "OpenGL"
-    }
-
-    filter "system:linux"
-        systemversion "latest"
-
-project "Example"
-    location "Refrences"
-    kind "ConsoleApp"
-    language "C++"
-    targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-    objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
-
-    files {"Refrences/**.cpp" }
-
-    includedirs {
-        "Zafran/vendor/GLFW/include",
-        "Zafran/vendor/GLFW/deps/glad/include"
-    }
-
-    links {
-        "OpenGL"    
-    }
-
-    filter "system:linux"
-        systemversion "latest"
-        defines { "ZAFRAN_PLATFORM_LINUX" }
-
-    filter "configurations:Debug"
-        defines "SANDBOX_DEBUG"
-        symbols "On"
-
-    filter "configurations:Release"
-        defines "SANDBOX_RELEASE"
-        optimize "On"
-    

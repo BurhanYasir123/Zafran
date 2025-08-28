@@ -26,7 +26,7 @@ namespace Zafran
         Vec2f GetTransform();
         Vec2f GetScale();
         Object_Type GetType();
-        void SetVerticies(const GLfloat* Verticies, int count);
+        void SetVerticies(const float* Verticies, int count);
         const float* GetVerticies();
         Vec2ui GetVB();
         int GetProgramID();
@@ -39,7 +39,7 @@ namespace Zafran
         Vec2f m_transform;
         Vec2f m_scale;
         bool show = true;
-        const GLfloat* m_Verticies;
+        const float* m_Verticies;
         Vec2ui VB;
         int m_ProgramID;
     };

@@ -1,7 +1,5 @@
 #pragma once
 
-#include <GLFW/glfw3.h> 
-
 struct Vec3f {
     float x, y, z;
     Vec3f(float _x = 0.0f, float _y = 0.0f, float _z = 0.0f) : x(_x), y(_y), z(_z) {}

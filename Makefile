@@ -11,63 +11,36 @@ endif
 ifeq ($(config),debug)
   Zafran_config = debug
   Sandbox_config = debug
-  OpenGL_config = debug
-  ImGui_config = debug
-  Example_config = debug
 
 else ifeq ($(config),release)
   Zafran_config = release
   Sandbox_config = release
-  OpenGL_config = release
-  ImGui_config = release
-  Example_config = release
 
 else
   $(error "invalid configuration $(config)")
 endif
 
-PROJECTS := Zafran Sandbox OpenGL ImGui Example
+PROJECTS := Zafran Sandbox
 
 .PHONY: all clean help $(PROJECTS) 
 
 all: $(PROJECTS)
 
-Zafran: OpenGL ImGui
+Zafran:
 ifneq (,$(Zafran_config))
 	@echo "==== Building Zafran ($(Zafran_config)) ===="
 	@${MAKE} --no-print-directory -C Zafran -f Makefile config=$(Zafran_config)
 endif
 
-Sandbox: Zafran OpenGL ImGui
+Sandbox: Zafran
 ifneq (,$(Sandbox_config))
 	@echo "==== Building Sandbox ($(Sandbox_config)) ===="
 	@${MAKE} --no-print-directory -C Sandbox -f Makefile config=$(Sandbox_config)
 endif
 
-OpenGL:
-ifneq (,$(OpenGL_config))
-	@echo "==== Building OpenGL ($(OpenGL_config)) ===="
-	@${MAKE} --no-print-directory -C Zafran/vendor/GLFW -f Makefile config=$(OpenGL_config)
-endif
-
-ImGui: OpenGL
-ifneq (,$(ImGui_config))
-	@echo "==== Building ImGui ($(ImGui_config)) ===="
-	@${MAKE} --no-print-directory -C Zafran/vendor/imgui -f Makefile config=$(ImGui_config)
-endif
-
-Example: OpenGL
-ifneq (,$(Example_config))
-	@echo "==== Building Example ($(Example_config)) ===="
-	@${MAKE} --no-print-directory -C Refrences -f Makefile config=$(Example_config)
-endif
-
 clean:
 	@${MAKE} --no-print-directory -C Zafran -f Makefile clean
 	@${MAKE} --no-print-directory -C Sandbox -f Makefile clean
-	@${MAKE} --no-print-directory -C Zafran/vendor/GLFW -f Makefile clean
-	@${MAKE} --no-print-directory -C Zafran/vendor/imgui -f Makefile clean
-	@${MAKE} --no-print-directory -C Refrences -f Makefile clean
 
 help:
 	@echo "Usage: make [config=name] [target]"
@@ -81,8 +54,5 @@ help:
 	@echo "   clean"
 	@echo "   Zafran"
 	@echo "   Sandbox"
-	@echo "   OpenGL"
-	@echo "   ImGui"
-	@echo "   Example"
 	@echo ""
 	@echo "For more information, see https://github.com/premake/premake-core/wiki"

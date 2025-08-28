@@ -11,12 +11,14 @@ namespace Zafran
 
         static Window Init(Vec2i size, const char* title);
 
-        GLFWwindow* GetGlfwWindow() { return m_window; };
-        void SetGlfwWindow(GLFWwindow* window) { m_window = window; };
+        SDL_Window* GetSDL3Window() { return m_window; };
+        void SetSDL3Window(SDL_Window* window) { m_window = window; };
         Vec2i GetWindowSize() { return m_size; };
 
+        SDL_Renderer* Renderer;
+
     private:
-        GLFWwindow* m_window;
+        SDL_Window* m_window;
         static Vec2i m_size;
     };
 }
